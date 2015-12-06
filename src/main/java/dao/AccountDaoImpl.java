@@ -20,8 +20,8 @@ import model.Nganh;
 @Repository
 public class AccountDaoImpl extends GenericDaoImpl<Account, Long> implements AccountDao {
 
-	public AccountDaoImpl(SessionFactory sessionFactory) {
-		super(sessionFactory);
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 	@Override
@@ -35,7 +35,8 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, Long> implements Acc
 			query.setParameter("user", username);
 			query.setParameter("pass", password);
 			account = (Account) query.uniqueResult();
-			getKhoaAndNganh(account, session);
+			if (account != null)
+				getKhoaAndNganh(account, session);
 			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {
@@ -63,6 +64,7 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, Long> implements Acc
 			if (query.uniqueResult() != null) {
 				account = null;
 			} else {
+				session.save(account);
 				getKhoaAndNganh(account, session);
 				session.flush();
 				session.getTransaction().commit();
@@ -85,39 +87,37 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, Long> implements Acc
 	 * 
 	 * @param account
 	 * @param session
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void getKhoaAndNganh(Account account, Session session) throws Exception {
 		try {
-			if (account != null) {
-				Khoa khoa = null;
-				Nganh nganh = null;
-				// select Khoa
-				Connection connection = ((SessionImpl) session).connection();
-				PreparedStatement pre = connection.prepareStatement(SQL.SELECT_ONLY_INFO_KHOA);
-				pre.setLong(1, account.getKhoaID());
-				ResultSet res = pre.executeQuery();
-				khoa = new Khoa();
-				if (res.next()) {
-					khoa.setId(res.getLong("id"));
-					khoa.setMaKhoa(res.getString("maKhoa"));
-					khoa.setTenKhoa(res.getString("tenKhoa"));
-				}
-				res.close();
-				account.setKhoa(khoa);
-				// select Nganh
-				pre = connection.prepareStatement(SQL.SELECT_ONLY_INFO_NGANH);
-				pre.setLong(1, account.getNganhID());
-				res = pre.executeQuery();
-				nganh = new Nganh();
-				if(res.next()){
-					nganh.setId(res.getLong("id"));
-					nganh.setMaNganh(res.getString("maNganh"));
-					nganh.setTenNganh(res.getString("tenNganh"));
-				}
-				res.close();
-				account.setNganh(nganh);
+			Khoa khoa = null;
+			Nganh nganh = null;
+			// select Khoa
+			Connection connection = ((SessionImpl) session).connection();
+			PreparedStatement pre = connection.prepareStatement(SQL.SELECT_ONLY_INFO_KHOA);
+			pre.setLong(1, account.getKhoaID());
+			ResultSet res = pre.executeQuery();
+			khoa = new Khoa();
+			if (res.next()) {
+				khoa.setId(res.getLong("id"));
+				khoa.setMaKhoa(res.getString("maKhoa"));
+				khoa.setTenKhoa(res.getString("tenKhoa"));
 			}
+			res.close();
+			account.setKhoa(khoa);
+			// select Nganh
+			pre = connection.prepareStatement(SQL.SELECT_ONLY_INFO_NGANH);
+			pre.setLong(1, account.getNganhID());
+			res = pre.executeQuery();
+			nganh = new Nganh();
+			if (res.next()) {
+				nganh.setId(res.getLong("id"));
+				nganh.setMaNganh(res.getString("maNganh"));
+				nganh.setTenNganh(res.getString("tenNganh"));
+			}
+			res.close();
+			account.setNganh(nganh);
 			session.flush();
 		} catch (Exception e) {
 			e.printStackTrace();

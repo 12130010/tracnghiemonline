@@ -16,9 +16,6 @@ public class MonHocDaoImpl extends GenericDaoImpl<MonHoc, Long> implements MonHo
 		this.cauHoiDao = cauHoiDao;
 	}
 
-	public MonHocDaoImpl(SessionFactory sessionFactory) {
-		super(sessionFactory);
-	}
 
 	@Override
 	public MonHoc getThiThu(long idMonHoc, int doKho) throws Exception {

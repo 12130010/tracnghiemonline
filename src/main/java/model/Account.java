@@ -11,9 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 @Entity
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
 	@Id
 	@GeneratedValue

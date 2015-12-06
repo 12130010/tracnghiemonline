@@ -22,10 +22,6 @@ import model.CauHoi;
 
 public class CauHoiDaoImpl extends GenericDaoImpl<CauHoi, Long> implements CauHoiDao {
 
-	public CauHoiDaoImpl(SessionFactory sessionFactory) {
-		super(sessionFactory);
-	}
-
 	@Override
 	public List<Long> listIdCauHoi(long idMonHoc) {
 		Session session = openSession();

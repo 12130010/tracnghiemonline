@@ -18,18 +18,18 @@ import model.Account;
 @Repository
 public abstract class GenericDaoImpl<E, K extends Serializable> implements GenericDao<E, K> {
 	@Autowired
-	private SessionFactory sessionFactory;
+	protected SessionFactory sessionFactory;
 
 	
 	protected Class<? extends E> daoType;
 
-	public GenericDaoImpl(SessionFactory sessionFactory) {
-		super();
-		this.sessionFactory = sessionFactory;
-		Type t = getClass().getGenericSuperclass();
-		ParameterizedType pt = (ParameterizedType) t;
-		daoType = (Class) pt.getActualTypeArguments()[0];
-	}
+//	public GenericDaoImpl(SessionFactory sessionFactory) {
+//		super();
+//		this.sessionFactory = sessionFactory;
+//		Type t = getClass().getGenericSuperclass();
+//		ParameterizedType pt = (ParameterizedType) t;
+//		daoType = (Class) pt.getActualTypeArguments()[0];
+//	}
 
 	/**
 	 * By defining this class as abstract, we prevent Spring from creating

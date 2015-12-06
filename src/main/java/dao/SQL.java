@@ -6,6 +6,7 @@ import model.CauHoi;
 public class SQL {
 	public static String ACCOUNT = Account.class.getName();
 	public static String CAUHOI = CauHoi.class.getName();
+	
 	public static String SELECT_ONLY_INFO_KHOA = "select * from khoa where id =? ";
 	public static String SELECT_ONLY_INFO_NGANH = "select * from nganh where id =? ";
 	public static String CHECK_USER_PASS = "from " + ACCOUNT + " where username = :user and password = :pass";

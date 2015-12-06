@@ -26,7 +26,7 @@ public class XepHangMonHocDaoImpl implements XepHangMonHocDao {
 	}
 
 	@Override
-	public void submitDiem(long idMonHoc, long idAccout, String tenAcc, int doKho, double diem) {
+	public void submitDiemThiThu(long idMonHoc, long idAccout, String tenAcc, int doKho, double diem) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		try {

@@ -62,9 +62,9 @@ public class SpringHibernateMain {
 		// session.close();
 		// AccountDao accountDao = new AccountDaoImpl(sessionFactory);
 		// try {
-		// System.out.println(accountDao.login("username", "password"));
-		// System.out.println(accountDao
-		// .register(new Account("NhuocQuy", new Date(), 12130329, "DH12DT",
+		// System.out.println(accountDao.login("username1", "password"));
+		//// System.out.println(accountDao
+		//// .register(new Account("NhuocQuy", new Date(), 12130329, "DH12DT",
 		// "username1", "password", 7, 5)));
 		// } catch (Exception e) {
 		// e.printStackTrace();
@@ -85,12 +85,12 @@ public class SpringHibernateMain {
 		// } catch (Exception e) {
 		// e.printStackTrace();
 		// }
-		XepHangMonHocDao xepHangMonHocDao = new XepHangMonHocDaoImpl(sessionFactory);
-		 try {
-		 System.out.println(xepHangMonHocDao.getXepHangMonHoc(9l, 1));
-		 } catch (Exception e) {
-		 e.printStackTrace();
-		 }
+//		XepHangMonHocDao xepHangMonHocDao = new XepHangMonHocDaoImpl(sessionFactory);
+//		 try {
+//		 System.out.println(xepHangMonHocDao.getXepHangMonHoc(9l, 1));
+//		 } catch (Exception e) {
+//		 e.printStackTrace();
+//		 }
 //		try {
 //			System.out.println(xepHangMonHocDao.listXepHangMonHoc(3l));
 //		} catch (Exception e) {
