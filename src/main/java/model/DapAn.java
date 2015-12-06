@@ -49,7 +49,8 @@ public class DapAn {
 	public void setHinh(String hinh) {
 		this.hinh = hinh;
 	}
-	public boolean laDADung() {
+	
+	public boolean isLaDADung() {
 		return laDADung;
 	}
 	public void setLaDADung(boolean laDADung) {

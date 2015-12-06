@@ -37,11 +37,11 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 	 * getClass().getGenericSuperClass() would return Object. There would be
 	 * exception because Object class does not hava constructor with parameters.
 	 */
-//	public GenericDaoImpl() {
-//		Type t = getClass().getGenericSuperclass();
-//		ParameterizedType pt = (ParameterizedType) t;
-//		daoType = (Class) pt.getActualTypeArguments()[0];
-//	}
+	public GenericDaoImpl() {
+		Type t = getClass().getGenericSuperclass();
+		ParameterizedType pt = (ParameterizedType) t;
+		daoType = (Class) pt.getActualTypeArguments()[0];
+	}
 
 	protected Session openSession() {
 		return sessionFactory.openSession();
@@ -164,7 +164,7 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			list = openSession().createCriteria(daoType).list();
+			list = session.createCriteria(daoType).list();
 			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {

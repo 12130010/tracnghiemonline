@@ -12,19 +12,19 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.internal.SessionImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import model.Account;
 import model.DauBang;
 import model.XepHangMonHoc;
 
-public class XepHangMonHocDaoImpl implements XepHangMonHocDao {
-	private SessionFactory sessionFactory;
-
-	public XepHangMonHocDaoImpl(SessionFactory sessionFactory) {
-		super();
+@Repository
+public class XepHangMonHocDaoImpl extends GenericDaoImpl<XepHangMonHoc, Long> implements XepHangMonHocDao {
+	@Autowired
+	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-
 	@Override
 	public void submitDiemThiThu(long idMonHoc, long idAccout, String tenAcc, int doKho, double diem) {
 		Session session = sessionFactory.openSession();
@@ -100,6 +100,7 @@ public class XepHangMonHocDaoImpl implements XepHangMonHocDao {
 		}
 		return xepHangMonHoc;
 	}
+
 	@Override
 	public XepHangMonHoc getXepHangMonHoc(long idMonHoc, int doKho) throws Exception {
 		XepHangMonHoc xepHangMonHoc = new XepHangMonHoc();
@@ -159,16 +160,19 @@ public class XepHangMonHocDaoImpl implements XepHangMonHocDao {
 				xepHangMonHoc.setTenMonHoc(res.getString("tenMonHoc"));
 				xepHangMonHoc.setXepHang(res.getInt("hang"));
 				xepHangMonHoc.setIdMonHoc(res.getLong("idMonHoc"));
-				/* get list DauBan
-				 * PreparedStatement pre2 =
-				 * connection.prepareStatement(SQL.LIST_DAUBAN_THEO_MONHOC);
-				 * pre2.setLong(1, idMonHoc); pre2.setInt(2, doKho);
-				 * pre2.setLong(3, idMonHoc); pre2.setInt(4, doKho); ResultSet
-				 * res2 = pre2.executeQuery(); while (res2.next()) {
-				 * xepHangMonHoc.addDauBang( new
-				 * DauBang(res2.getString("tenAcc"), res2.getDouble("diem"),
-				 * res2.getInt("hang"))); } res2.close();
-				 */
+				//
+				PreparedStatement pre2 = connection.prepareStatement(SQL.LIST_DAUBAN_THEO_MONHOC);
+				pre2.setLong(1, xepHangMonHoc.getIdMonHoc());
+				pre2.setInt(2, res.getInt("doKho"));
+				pre2.setLong(3, xepHangMonHoc.getIdMonHoc());
+				pre2.setInt(4, res.getInt("doKho"));
+				ResultSet res2 = pre2.executeQuery();
+				while (res2.next()) {
+					xepHangMonHoc.addDauBang(
+							new DauBang(res2.getString("tenAcc"), res2.getDouble("diem"), res2.getInt("hang")));
+				}
+				res2.close();
+				//
 				list.add(xepHangMonHoc);
 			}
 			res.close();

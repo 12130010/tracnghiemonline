@@ -19,7 +19,7 @@ import model.Nganh;
 
 @Repository
 public class AccountDaoImpl extends GenericDaoImpl<Account, Long> implements AccountDao {
-
+	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}

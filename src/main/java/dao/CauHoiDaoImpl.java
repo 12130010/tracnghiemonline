@@ -16,11 +16,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.internal.SessionImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import model.Account;
 import model.CauHoi;
-
+@Repository
 public class CauHoiDaoImpl extends GenericDaoImpl<CauHoi, Long> implements CauHoiDao {
+	@Autowired
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	@Override
 	public List<Long> listIdCauHoi(long idMonHoc) {
@@ -34,7 +40,7 @@ public class CauHoiDaoImpl extends GenericDaoImpl<CauHoi, Long> implements CauHo
 			sqlQuery.setParameter("idMonHoc", idMonHoc);
 			sqlQuery.addEntity(CauHoi.class);
 			List<CauHoi> listCH = sqlQuery.list();
-//			System.out.println(listCH);
+			// System.out.println(listCH);
 			for (CauHoi cauHoi : listCH) {
 				list.add(cauHoi.getId());
 			}

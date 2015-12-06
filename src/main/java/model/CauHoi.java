@@ -86,7 +86,7 @@ public class CauHoi {
 	public double getDiemThi(double diem){
 		double slgDung = 0, slgChon=0;
 		for (DapAn dapAn : dsDapAn) {
-			slgDung = slgDung + (dapAn.laDADung() ? 1 : 0); 
+			slgDung = slgDung + (dapAn.isLaDADung() ? 1 : 0); 
 			slgChon = slgChon + (dapAn.isSelected() ? 1 : 0);
 		}
 		slgChon = diem * (slgChon/slgDung);

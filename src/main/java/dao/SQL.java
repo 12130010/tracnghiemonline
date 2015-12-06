@@ -25,7 +25,7 @@ public class SQL {
 	 * 5: doKho
 	 */
 //	public static String RANK_THEO_ACCOUNT_AND_MON_SQL = "select idMonHoc,tenMonHoc, idAccount, tenAcc, doKho, MAX(diem) from xephang as xh INNER JOIN monhoc as mh on  xh.idMonHoc = mh.id where idAccount = ? and idMonHoc = ? and doKho = ? group by idMonHoc, doKho, tenMonHoc;";
-	public static String RANK_THEO_ACCOUNT_AND_MON_SQL = "select idMonHoc, tenMonHoc, idAccount, tenAcc, doKho,MAX(diem), FIND_IN_SET( MAX(diem), ( SELECT GROUP_CONCAT( diem ORDER BY diem DESC )  FROM xephang  where  idMonHoc = ? and doKho = ? ) ) as hang from xephang as xh INNER JOIN monhoc as mh on  xh.idMonHoc = mh.id where idAccount = ? and idMonHoc = ? and doKho = ? group by idMonHoc, doKho, tenMonHoc;";
+	public static String RANK_THEO_ACCOUNT_AND_MON_SQL = "select idMonHoc, tenMonHoc, idAccount, tenAcc, doKho,MAX(diem) diem, FIND_IN_SET( MAX(diem), ( SELECT GROUP_CONCAT(DISTINCT diem ORDER BY diem DESC )  FROM xephang  where  idMonHoc = ? and doKho = ? ) ) as hang from xephang as xh INNER JOIN monhoc as mh on  xh.idMonHoc = mh.id where idAccount = ? and idMonHoc = ? and doKho = ? group by idMonHoc, doKho, tenMonHoc;";
 	/**
 	 * LIST_DAUBAN_THEO_MONHOC
 	 * 1: idMonHoc
