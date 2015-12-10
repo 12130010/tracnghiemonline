@@ -58,9 +58,8 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, Long> implements Acc
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			Query query = session.createQuery(SQL.CHECK_USER_PASS);
+			Query query = session.createQuery(SQL.CHECK_USERNAME);
 			query.setParameter("user", account.getUsername());
-			query.setParameter("pass", account.getPassword());
 			if (query.uniqueResult() != null) {
 				account = null;
 			} else {
@@ -124,5 +123,20 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, Long> implements Acc
 			throw e;
 		} finally {
 		}
+	}
+
+	@Override
+	public void changePassword(Account account) throws Exception {
+		try {
+			saveOrUpdate(account);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public Account forgetPassword(long idAccount) throws Exception {
+		return find(idAccount);
 	}
 }

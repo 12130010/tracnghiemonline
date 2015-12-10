@@ -20,12 +20,13 @@ public class MonHoc {
 	private int thoiGian;
 	private int soLgCauHoi;
 	private String maMH;
-//	@OneToMany
-//	@JoinColumn(name = "monhoc_id")
+	/*@OneToMany
+	@JoinColumn(name = "monhoc_id")*/
 	@Transient
 	private List<CauHoi> dsCauHoi = new ArrayList<>();;
 	@Transient
 	private int doKho;
+
 	public MonHoc() {
 	}
 

@@ -13,6 +13,8 @@ import dao.CauHoiDao;
 import dao.CauHoiDaoImpl;
 import dao.KhoaDao;
 import dao.KhoaDaoImpl;
+import dao.MessageDao;
+import dao.MessageDaoImpl;
 import dao.MonHocDao;
 import dao.MonHocDaoImpl;
 import dao.XepHangMonHocDao;
@@ -85,17 +87,25 @@ public class SpringHibernateMain {
 		// } catch (Exception e) {
 		// e.printStackTrace();
 		// }
-//		XepHangMonHocDao xepHangMonHocDao = new XepHangMonHocDaoImpl(sessionFactory);
-//		 try {
-//		 System.out.println(xepHangMonHocDao.getXepHangMonHoc(9l, 1));
-//		 } catch (Exception e) {
-//		 e.printStackTrace();
-//		 }
-//		try {
-//			System.out.println(xepHangMonHocDao.listXepHangMonHoc(3l));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		// XepHangMonHocDao xepHangMonHocDao = new
+		// XepHangMonHocDaoImpl(sessionFactory);
+		// try {
+		// System.out.println(xepHangMonHocDao.getXepHangMonHoc(9l, 1));
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// try {
+		// System.out.println(xepHangMonHocDao.listXepHangMonHoc(3l));
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		MessageDao messageDao = new MessageDaoImpl(sessionFactory);
+		try {
+			System.out.println(messageDao.getNewMessage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		context.close();
 	}
 }

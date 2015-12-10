@@ -10,6 +10,7 @@ public class SQL {
 	public static String SELECT_ONLY_INFO_KHOA = "select * from khoa where id =? ";
 	public static String SELECT_ONLY_INFO_NGANH = "select * from nganh where id =? ";
 	public static String CHECK_USER_PASS = "from " + ACCOUNT + " where username = :user and password = :pass";
+	public static String CHECK_USERNAME = "from " + ACCOUNT + " where username = :user";
 	public static String LIST_CAUHOI_OF_MONHOC = "from " + CAUHOI + " where monhoc_id = :idMonHoc";
 	public static String LIST_CAUHOI_OF_MONHOC_SQL = "select * from cauhoi where monhoc_id = :idMonHoc";
 	/**LIST_CAUHOI_OF_MONHOC_WITH_DOKHO_SQL
@@ -42,4 +43,12 @@ public class SQL {
 	 * 1: idMonHoc
 	 */
 	public static String GET_TEN_MONHOC = "select id as idMonHoc, tenMonHoc from monhoc where id = ?";
+	/**SAVE_MESSAGE
+	 * :message : message
+	 */
+	public static String SAVE_MESSAGE = "insert into message (message) values (:message);" ;
+	/**GET_MESSAGE
+	 * 1 : limit
+	 */
+	public static String GET_MESSAGE = "select * from message order by  id DESC limit 0,?;" ;
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import dao.AccountDao;
 import dao.KhoaDao;
+import dao.MessageDao;
 import dao.MonHocDao;
 import dao.XepHangMonHocDao;
 import model.Account;
@@ -26,6 +27,8 @@ public class ThiThuService {
 	MonHocDao monHocDao;
 	@Autowired
 	XepHangMonHocDao xepHangMonHocDao;
+	@Autowired
+	MessageDao messageDao;
 
 	public Account register(Account account) throws Exception {
 		return accountDao.register(account);
@@ -33,6 +36,9 @@ public class ThiThuService {
 
 	public Account login(String username, String password) throws Exception {
 		return accountDao.login(username, password);
+	}
+	public Account login(long idAccount) throws Exception {
+		return accountDao.find(idAccount);
 	}
 
 	public List<Khoa> syncDataKhoa() {
@@ -66,7 +72,6 @@ public class ThiThuService {
 		}
 	}
 
-
 	public XepHangMonHoc getXepHangThiThu(long idMonHoc, int doKho) {
 		try {
 			return xepHangMonHocDao.getXepHangMonHoc(idMonHoc, doKho);
@@ -75,6 +80,7 @@ public class ThiThuService {
 			return new XepHangMonHoc();
 		}
 	}
+
 	public List<XepHangMonHoc> getXepHangThiThu(long idAccount) {
 		try {
 			return xepHangMonHocDao.listXepHangMonHoc(idAccount);
@@ -82,5 +88,21 @@ public class ThiThuService {
 			e.printStackTrace();
 			return new ArrayList<>();
 		}
+	}
+
+	public String getNewMessage() throws Exception {
+		return messageDao.getNewMessage();
+	}
+
+	public List<String> getMessage(int n) throws Exception {
+		return messageDao.getNewMessage(n);
+	}
+
+	public void changPassword(Account account) throws Exception {
+		accountDao.changePassword(account);
+	}
+
+	public Account forgetPassword(long idAccount) throws Exception {
+		return accountDao.forgetPassword(idAccount);
 	}
 }

@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
 @Entity
 public class CauHoi {
 	@Transient
@@ -23,10 +25,12 @@ public class CauHoi {
 	@Id
 	@GeneratedValue
 	private long id;
+	@Type(type="text")
 	private String noiDung;
 	@ElementCollection()
 	@CollectionTable(name="hinh", joinColumns=@JoinColumn(name="cauhoi_id"))
 	private List<String> dsHinh = new ArrayList<>();
+	@Type(type="text")
 	private String giaiThich;
 	@OneToMany()
 	@JoinColumn(name="cauhoi_id")

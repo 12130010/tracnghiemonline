@@ -7,15 +7,13 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 @Entity
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
 	@Id
 	@GeneratedValue
@@ -27,6 +25,9 @@ public class Account {
 	private String lop;
 	private String username;
 	private String password;
+	private boolean kichHoat;
+	private boolean locked;
+	private String keyKichHoat;
 	@Transient
 	private List<XepHangMonHoc> dsXepHang = new ArrayList<>();;
 	private long khoaID;
@@ -146,6 +147,30 @@ public class Account {
 
 	public void setNganh(Nganh nganh) {
 		this.nganh = nganh;
+	}
+
+	public boolean isKichHoat() {
+		return kichHoat;
+	}
+
+	public void setKichHoat(boolean kichHoat) {
+		this.kichHoat = kichHoat;
+	}
+
+	public String getKeyKichHoat() {
+		return keyKichHoat;
+	}
+
+	public void setKeyKichHoat(String keyKichHoat) {
+		this.keyKichHoat = keyKichHoat;
+	}
+
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 
 	@Override
