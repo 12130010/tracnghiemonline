@@ -79,14 +79,16 @@ public class SpringHibernateMain {
 		// XepHangMonHocDao xepHangMonHocDao = new
 		// XepHangMonHocDaoImpl(sessionFactory);
 		// xepHangMonHocDao.submitDiem(9l, 3, "Hoang Nhuoc Quy", 1, 9);
-		// MonHocDaoImpl monHocDao = new MonHocDaoImpl(sessionFactory);
-		// CauHoiDao cauHoiDao = new CauHoiDaoImpl(sessionFactory);
-		// monHocDao.setCauHoiDao(cauHoiDao);
-		// try {
-		// System.out.println(monHocDao.getThiThu(9l, 1));
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
+		 MonHocDaoImpl monHocDao = new MonHocDaoImpl();
+		 monHocDao.setSessionFactory(sessionFactory);
+		 CauHoiDaoImpl cauHoiDao = new CauHoiDaoImpl();
+		 cauHoiDao.setSessionFactory(sessionFactory);
+		 monHocDao.setCauHoiDao(cauHoiDao);
+		try {
+			System.out.println(monHocDao.getThiThu(10l, 1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// XepHangMonHocDao xepHangMonHocDao = new
 		// XepHangMonHocDaoImpl(sessionFactory);
 		// try {
@@ -99,13 +101,13 @@ public class SpringHibernateMain {
 		// } catch (Exception e) {
 		// e.printStackTrace();
 		// }
-		MessageDao messageDao = new MessageDaoImpl(sessionFactory);
-		try {
-			System.out.println(messageDao.getNewMessage());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		MessageDao messageDao = new MessageDaoImpl(sessionFactory);
+//		try {
+//			System.out.println(messageDao.getNewMessage());
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		context.close();
 	}
 }

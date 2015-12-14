@@ -25,8 +25,18 @@ public class SQL {
 	 * 4: idMonHoc
 	 * 5: doKho
 	 */
-//	public static String RANK_THEO_ACCOUNT_AND_MON_SQL = "select idMonHoc,tenMonHoc, idAccount, tenAcc, doKho, MAX(diem) from xephang as xh INNER JOIN monhoc as mh on  xh.idMonHoc = mh.id where idAccount = ? and idMonHoc = ? and doKho = ? group by idMonHoc, doKho, tenMonHoc;";
-	public static String RANK_THEO_ACCOUNT_AND_MON_SQL = "select idMonHoc, tenMonHoc, idAccount, tenAcc, doKho,MAX(diem) diem, FIND_IN_SET( MAX(diem), ( SELECT GROUP_CONCAT(DISTINCT diem ORDER BY diem DESC )  FROM xephang  where  idMonHoc = ? and doKho = ? ) ) as hang from xephang as xh INNER JOIN monhoc as mh on  xh.idMonHoc = mh.id where idAccount = ? and idMonHoc = ? and doKho = ? group by idMonHoc, doKho, tenMonHoc;";
+
+//	public static String RANK_THEO_ACCOUNT_AND_MON_SQL = "select idMonHoc, tenMonHoc, idAccount, tenAcc, doKho,MAX(diem) diem, FIND_IN_SET( MAX(diem), ( SELECT GROUP_CONCAT(DISTINCT diem ORDER BY diem DESC )  FROM xephang  where  idMonHoc = ? and doKho = ? ) ) as hang from xephang as xh INNER JOIN monhoc as mh on  xh.idMonHoc = mh.id where idAccount = ? and idMonHoc = ? and doKho = ? group by idMonHoc, doKho, tenMonHoc;";
+	/** RANK_THEO_ACCOUNT_AND_MON_SQL
+	 * 1: idMonHoc
+	 * 2: doKho
+	 * 3: idMonHoc
+	 * 4: doKho
+	 * 5: idAccount
+	 * 6: idMonHoc
+	 * 7: doKho
+	 */
+	public static String RANK_THEO_ACCOUNT_AND_MON_SQL = "select idMonHoc, tenMonHoc, idAccount, tenAcc, doKho,MAX(diem) diem, FIND_IN_SET( MAX(diem),  ( SELECT GROUP_CONCAT(DISTINCT diem ORDER BY diem DESC ) FROM xephang where  idMonHoc = ? and doKho = ?) )as hang , FIND_IN_SET( idAccount,  ( SELECT GROUP_CONCAT(DISTINCT idAccount  ORDER BY diem DESC )  FROM xephang  where  idMonHoc = ? and doKho = ? ) ) as viTri from xephang as xh INNER JOIN monhoc as mh on  xh.idMonHoc = mh.id where idAccount = ? and idMonHoc = ? and doKho = ? group by idMonHoc, doKho, tenMonHoc; ";
 	/**
 	 * LIST_DAUBAN_THEO_MONHOC
 	 * 1: idMonHoc

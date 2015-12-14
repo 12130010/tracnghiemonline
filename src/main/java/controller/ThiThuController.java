@@ -1,7 +1,15 @@
 package controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,6 +29,9 @@ import service.ThiThuService;
 
 @Controller
 public class ThiThuController {
+	private static final int BUFFER_SIZE = 4096;
+	@Autowired
+	public  String IMAGE_DIR;
 	@Autowired
 	ThiThuService thiThuService;
 
@@ -63,7 +74,7 @@ public class ThiThuController {
 
 	@RequestMapping(value = "/thithu", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody MonHoc thiThu(@RequestParam(defaultValue = "0") long idMonHoc,
-			@RequestParam(defaultValue = "0") int doKho) {
+			@RequestParam(defaultValue = "1") int doKho) {
 		try {
 			return thiThuService.getDeThiThu(idMonHoc, doKho);
 		} catch (Exception e) {
@@ -73,7 +84,7 @@ public class ThiThuController {
 	}
 
 	@RequestMapping(value = "/luudiemthithu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody MyStatus luuDiemThiThu(@RequestParam long idMonHoc, @RequestParam long idAccount,
+	public @ResponseBody MyStatus luuDiemThiThu(@RequestParam long idMonHoc, @RequestParam(defaultValue = "0") long idAccount,
 			@RequestParam String tenAcc, @RequestParam int doKho, @RequestParam double diem) {
 		return thiThuService.luuDiemThiThu(idMonHoc, idAccount, tenAcc, doKho, diem);
 	}
@@ -143,4 +154,45 @@ public class ThiThuController {
 		}
 		return myStatus;
 	}
+	@RequestMapping(value = "/download",method = RequestMethod.GET)
+    public void doDownload(HttpServletRequest request,
+            HttpServletResponse response,@RequestParam(required = true) String fileName) throws IOException {
+ 
+        String fullPath = IMAGE_DIR + fileName;      
+        File downloadFile = new File(fullPath);
+        FileInputStream inputStream = new FileInputStream(downloadFile);
+         
+        // get MIME type of the file
+        String mimeType = request.getSession().getServletContext().getMimeType(fullPath);
+        if (mimeType == null) {
+            // set to binary type if MIME mapping not found
+            mimeType = "application/octet-stream";
+        }
+        System.out.println("MIME type: " + mimeType);
+ 
+        // set content attributes for the response
+        response.setContentType(mimeType);
+        response.setContentLength((int) downloadFile.length());
+ 
+        // set headers for the response
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"",
+                downloadFile.getName());
+        response.setHeader(headerKey, headerValue);
+ 
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+ 
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int bytesRead = -1;
+ 
+        // write bytes read from the input stream into the output stream
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        }
+ 
+        inputStream.close();
+        outStream.close();
+ 
+    }
 }

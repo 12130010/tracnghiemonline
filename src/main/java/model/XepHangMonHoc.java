@@ -3,12 +3,18 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Transient;
+
 public class XepHangMonHoc {
 	private long id;
 	private long idMonHoc;
 	private String tenMonHoc;
 	private int xepHang;
 	private int viTri;
+	@Transient
+	private double diemCaoNhat;
+	@Transient
+	private int doKho;
 	private List<DauBang> dsDauBang = new ArrayList<>();;
 
 	public XepHangMonHoc() {
@@ -71,6 +77,22 @@ public class XepHangMonHoc {
 
 	public void setIdMonHoc(long idMonHoc) {
 		this.idMonHoc = idMonHoc;
+	}
+
+	public double getDiemCaoNhat() {
+		return diemCaoNhat;
+	}
+
+	public void setDiemCaoNhat(double diemCaoNhat) {
+		this.diemCaoNhat = diemCaoNhat;
+	}
+
+	public int getDoKho() {
+		return doKho;
+	}
+
+	public void setDoKho(int doKho) {
+		this.doKho = doKho;
 	}
 
 	@Override

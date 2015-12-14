@@ -16,5 +16,9 @@
 	        <property name="prefix" value="/WEB-INF/view/"/>
 	        <property name="suffix" value=".jsp"/>
 	</bean>
+	
+	<bean id="IMAGE_DIR" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="F:\tmp\deleted\clbtinhoc\"></constructor-arg>
+	</bean>
 
 </beans>

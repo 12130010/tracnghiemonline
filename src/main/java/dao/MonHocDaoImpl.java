@@ -29,8 +29,10 @@ public class MonHocDaoImpl extends GenericDaoImpl<MonHoc, Long> implements MonHo
 		try {
 			transaction = session.beginTransaction();
 			monHoc = (MonHoc) session.get(MonHoc.class, idMonHoc);
-			if (monHoc != null)
+			if (monHoc != null){
 				monHoc.setDsCauHoi(cauHoiDao.listCauHoi(monHoc.getSoLgCauHoi(), idMonHoc, doKho));
+				monHoc.setDoKho(doKho);
+			}
 			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {

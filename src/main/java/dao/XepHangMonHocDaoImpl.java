@@ -65,14 +65,19 @@ public class XepHangMonHocDaoImpl extends GenericDaoImpl<XepHangMonHoc, Long> im
 			PreparedStatement pre = connection.prepareStatement(SQL.RANK_THEO_ACCOUNT_AND_MON_SQL);
 			pre.setLong(1, idMonHoc);
 			pre.setInt(2, doKho);
-			pre.setLong(3, idAccount);
-			pre.setLong(4, idMonHoc);
-			pre.setInt(5, doKho);
+			pre.setLong(3, idMonHoc);
+			pre.setInt(4, doKho);
+			pre.setLong(5, idAccount);
+			pre.setLong(6, idMonHoc);
+			pre.setInt(7, doKho);
 			ResultSet res = pre.executeQuery();
 			if (res.next()) {
 				xepHangMonHoc.setTenMonHoc(res.getString("tenMonHoc"));
 				xepHangMonHoc.setXepHang(res.getInt("hang"));
 				xepHangMonHoc.setIdMonHoc(res.getLong("idMonHoc"));
+				xepHangMonHoc.setDiemCaoNhat(res.getDouble("diem"));
+				xepHangMonHoc.setDoKho(res.getInt("doKho"));
+				xepHangMonHoc.setViTri(res.getInt("viTri"));
 				PreparedStatement pre2 = connection.prepareStatement(SQL.LIST_DAUBAN_THEO_MONHOC);
 				pre2.setLong(1, idMonHoc);
 				pre2.setInt(2, doKho);

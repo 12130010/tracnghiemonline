@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 
 import model.Account;
 import model.CauHoi;
+
 @Repository
 public class CauHoiDaoImpl extends GenericDaoImpl<CauHoi, Long> implements CauHoiDao {
 	@Autowired
@@ -121,18 +122,20 @@ public class CauHoiDaoImpl extends GenericDaoImpl<CauHoi, Long> implements CauHo
 		try {
 			transaction = session.beginTransaction();
 			List<Long> listID = listIdCauHoi(idMonHoc, doKho);
-			Set<Integer> set = new HashSet<>();
-			int j = 0;
-			int len = listID.size();
-			Random r = new Random();
-			CauHoi cauHoiTmp = null;
-			for (int i = 0; i < sum; i++) {
-				do {
-					j = r.nextInt(len);
-				} while (!set.add(j));
-				cauHoiTmp = (CauHoi) session.get(CauHoi.class, listID.get(j));
-				cauHoiTmp.fetchAll();
-				listCauHoi.add(cauHoiTmp);
+			if (!listID.isEmpty()) {
+				Set<Integer> set = new HashSet<>();
+				int j = 0;
+				int len = listID.size();
+				Random r = new Random();
+				CauHoi cauHoiTmp = null;
+				for (int i = 0; i < sum; i++) {
+					do {
+						j = r.nextInt(len);
+					} while (!set.add(j));
+					cauHoiTmp = (CauHoi) session.get(CauHoi.class, listID.get(j));
+					cauHoiTmp.fetchAll();
+					listCauHoi.add(cauHoiTmp);
+				}
 			}
 			session.flush();
 			session.getTransaction().commit();
