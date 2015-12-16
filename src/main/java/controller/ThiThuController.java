@@ -89,7 +89,7 @@ public class ThiThuController {
 		return thiThuService.luuDiemThiThu(idMonHoc, idAccount, tenAcc, doKho, diem);
 	}
 
-	@RequestMapping(value = "getxephangthithu", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getxephangthithu", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody XepHangMonHoc getXepHangThiThu(@RequestParam(defaultValue = "-1") long idMonHoc,
 			@RequestParam(defaultValue = "-1") long idAccount, @RequestParam(defaultValue = "-1") int doKho) {
 		if (idAccount == -1) {
@@ -99,7 +99,7 @@ public class ThiThuController {
 		}
 	}
 
-	@RequestMapping(value = "listxephangthithu", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listxephangthithu", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<XepHangMonHoc> listxephangthithu(@RequestParam(defaultValue = "-1") long idAccount) {
 		return thiThuService.getXepHangThiThu(idAccount);
 	}

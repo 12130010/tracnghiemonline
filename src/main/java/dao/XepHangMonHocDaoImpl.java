@@ -63,13 +63,9 @@ public class XepHangMonHocDaoImpl extends GenericDaoImpl<XepHangMonHoc, Long> im
 			transaction = session.beginTransaction();
 			Connection connection = ((SessionImpl) session).connection();
 			PreparedStatement pre = connection.prepareStatement(SQL.RANK_THEO_ACCOUNT_AND_MON_SQL);
-			pre.setLong(1, idMonHoc);
-			pre.setInt(2, doKho);
-			pre.setLong(3, idMonHoc);
-			pre.setInt(4, doKho);
-			pre.setLong(5, idAccount);
-			pre.setLong(6, idMonHoc);
-			pre.setInt(7, doKho);
+			pre.setLong(1, idAccount);
+			pre.setLong(2, idMonHoc);
+			pre.setInt(3, doKho);
 			ResultSet res = pre.executeQuery();
 			if (res.next()) {
 				xepHangMonHoc.setTenMonHoc(res.getString("tenMonHoc"));
@@ -81,8 +77,6 @@ public class XepHangMonHocDaoImpl extends GenericDaoImpl<XepHangMonHoc, Long> im
 				PreparedStatement pre2 = connection.prepareStatement(SQL.LIST_DAUBAN_THEO_MONHOC);
 				pre2.setLong(1, idMonHoc);
 				pre2.setInt(2, doKho);
-				pre2.setLong(3, idMonHoc);
-				pre2.setInt(4, doKho);
 				ResultSet res2 = pre2.executeQuery();
 				while (res2.next()) {
 					xepHangMonHoc.addDauBang(
@@ -157,7 +151,7 @@ public class XepHangMonHocDaoImpl extends GenericDaoImpl<XepHangMonHoc, Long> im
 		try {
 			transaction = session.beginTransaction();
 			Connection connection = ((SessionImpl) session).connection();
-			PreparedStatement pre = connection.prepareStatement(SQL.RANK_THEO_ACCOUNT_SQL);
+			PreparedStatement pre = connection.prepareStatement(SQL.LIST_RANK_THEO_ACCOUNT_SQL);
 			pre.setLong(1, idAccount);
 			ResultSet res = pre.executeQuery();
 			while (res.next()) {
@@ -165,18 +159,21 @@ public class XepHangMonHocDaoImpl extends GenericDaoImpl<XepHangMonHoc, Long> im
 				xepHangMonHoc.setTenMonHoc(res.getString("tenMonHoc"));
 				xepHangMonHoc.setXepHang(res.getInt("hang"));
 				xepHangMonHoc.setIdMonHoc(res.getLong("idMonHoc"));
+				xepHangMonHoc.setDiemCaoNhat(res.getDouble("diem"));
+				xepHangMonHoc.setDoKho(res.getInt("doKho"));
+				//xepHangMonHoc.setViTri(res.getInt("viTri")); //khong can set viTri
 				//
-				PreparedStatement pre2 = connection.prepareStatement(SQL.LIST_DAUBAN_THEO_MONHOC);
-				pre2.setLong(1, xepHangMonHoc.getIdMonHoc());
-				pre2.setInt(2, res.getInt("doKho"));
-				pre2.setLong(3, xepHangMonHoc.getIdMonHoc());
-				pre2.setInt(4, res.getInt("doKho"));
-				ResultSet res2 = pre2.executeQuery();
-				while (res2.next()) {
-					xepHangMonHoc.addDauBang(
-							new DauBang(res2.getString("tenAcc"), res2.getDouble("diem"), res2.getInt("hang")));
-				}
-				res2.close();
+				// PreparedStatement pre2 =
+				// connection.prepareStatement(SQL.LIST_DAUBAN_THEO_MONHOC);
+				// pre2.setLong(1, xepHangMonHoc.getIdMonHoc());
+				// pre2.setInt(2, res.getInt("doKho"));
+				// ResultSet res2 = pre2.executeQuery();
+				// while (res2.next()) {
+				// xepHangMonHoc.addDauBang(
+				// new DauBang(res2.getString("tenAcc"), res2.getDouble("diem"),
+				// res2.getInt("hang")));
+				// }
+				// res2.close();
 				//
 				list.add(xepHangMonHoc);
 			}
