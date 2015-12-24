@@ -241,25 +241,69 @@ public class ThiThuController {
 	public @ResponseBody String addKhoa(Khoa khoa) {
 		System.out.println(khoa);
 		try {
-			thiThuService.addKhoa(khoa);
+			thiThuService.saveOrUpdate(khoa);
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "fail";
 		}
 	}
+
 	@RequestMapping(value = "addnganh", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public @ResponseBody String addNganh(Nganh nganh, int indexKhoa, HttpSession session) {
 		List<Khoa> listKhoa = (List<Khoa>) session.getAttribute(LIST_KHOA);
 		Khoa khoa = listKhoa.get(indexKhoa);
-		khoa.addNganh(nganh);
 		try {
-//			thiThuService.addNganh(nganh);
-			thiThuService.updateKhoa(khoa);
+			// thiThuService.addNganh(nganh);
+			if (nganh.getId() == 0) {
+				khoa.addNganh(nganh);
+				thiThuService.saveOrUpdate(khoa);
+			} else {
+				thiThuService.updateNganh(nganh);
+				khoa.getDsNganh().remove(nganh);
+				khoa.getDsNganh().add(nganh);
+			}
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "fail";
 		}
+	}
+
+	@RequestMapping(value = "deletekhoa")
+	public @ResponseBody String deleteKhoa(int indexKhoa, HttpSession session) {
+		List<Khoa> listKhoa = (List<Khoa>) session.getAttribute(LIST_KHOA);
+		Khoa khoa = listKhoa.get(indexKhoa);
+		if (!khoa.getDsNganh().isEmpty()) {
+			return "Khoa " + khoa.getTenKhoa() + " còn chứa danh sách ngành nên không thể xóa!!!";
+		} else {
+			try {
+				thiThuService.deleteKhoa(khoa);
+				return "success";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "fail";
+			}
+		}
+	}
+
+	@RequestMapping(value = "deletenganh")
+	public @ResponseBody String deleteNganh(int indexKhoa, int indexNganh, HttpSession session) {
+		List<Khoa> listKhoa = (List<Khoa>) session.getAttribute(LIST_KHOA);
+		Khoa khoa = listKhoa.get(indexKhoa);
+		Nganh nganh = khoa.getDsNganh().get(indexNganh);
+		if (!nganh.getDsMonHoc().isEmpty()) {
+			return "Ngành" + nganh.getTenNganh() + " còn chứa danh sách môn học nên không thể xóa!!!";
+		} else {
+			try {
+				thiThuService.deleteNganh(nganh);
+				khoa.getDsNganh().remove(nganh);
+				return "success";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "fail";
+			}
+		}
+
 	}
 }

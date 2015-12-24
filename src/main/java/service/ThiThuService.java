@@ -114,14 +114,20 @@ public class ThiThuService {
 	 * quan li admin
 	 */
 
-	public void addKhoa(Khoa khoa) {
-		khoaDao.save(khoa);
-	}
-	public void updateKhoa(Khoa khoa) {
+	public void saveOrUpdate(Khoa khoa) {
 		khoaDao.saveOrUpdate(khoa);
+	}
+	public void deleteKhoa(Khoa khoa){
+		khoaDao.remove(khoa);
 	}
 
 	public void addNganh(Nganh nganh) {
 		nganhDao.save(nganh);
+	}
+	public void updateNganh(Nganh nganh){
+		nganhDao.saveOrUpdate(nganh);
+	}
+	public void deleteNganh(Nganh nganh){
+		nganhDao.remove(nganh);
 	}
 }

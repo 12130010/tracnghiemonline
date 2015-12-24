@@ -66,6 +66,8 @@
 		<option value="-1">Chọn ngành</option>
 	</select>
 	<hr />
+	<button onclick="">Thêm môn học</button>
+	<hr/>
 	<div id="content-table-monhoc"></div>
 </body>
 </html>

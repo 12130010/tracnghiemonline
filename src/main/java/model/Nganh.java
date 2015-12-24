@@ -64,6 +64,13 @@ public class Nganh {
 		dsMonHoc.add(monHoc);
 	}
 	@Override
+	public boolean equals(Object obj) {
+		if( obj == null || !(obj instanceof Nganh))
+			return false;
+		Nganh that = (Nganh) obj;
+		return this.id == that.id;
+	}
+	@Override
 	public String toString() {
 		return "Nganh [id=" + id + ", maHoc=" + maNganh + ", tenNganh=" + tenNganh + ", dsMonHoc=" + dsMonHoc + "]";
 	}

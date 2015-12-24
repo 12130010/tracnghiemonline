@@ -9,11 +9,11 @@
 <meta charset="utf-8">
 <title>Add Khoa</title>
 <script type="text/javascript">
-	var dialog, form;
+	var dialogKhoa, form;
 	$(document).ready(function() {
 		$('#table_khoa').DataTable();
 
-		dialog = $("#dialog-form").dialog({
+		dialogKhoa = $("#dialog-form").dialog({
 			autoOpen : false,
 			height : 350,
 			width : 350,
@@ -21,7 +21,7 @@
 			buttons : {
 				"Tạo khoa" : addKhoa,
 				Cancel : function() {
-					dialog.dialog("close");
+					dialogKhoa.dialog("close");
 				}
 			},
 			close : function() {
@@ -29,32 +29,59 @@
 				// 				allFields.removeClass("ui-state-error");
 			}
 		});
-		form = dialog.find("form").on("submit", function(event) {
+		form = dialogKhoa.find("form").on("submit", function(event) {
 			event.preventDefault();
 			addKhoa();
 		});
 	});
 
 	function addKhoa() {
+		var id = $("input[name='id']").val();
 		var maKhoa = $("input[name='maKhoa']").val();
 		var tenKhoa = $("input[name='tenKhoa']").val();
-		dialog.dialog("close");
+		dialogKhoa.dialog("close");
 		$.post("addkhoa", {
+			id: id,
 			maKhoa : maKhoa,
 			tenKhoa : tenKhoa
 		}).done(function(data) {
 			alert(data);
+			if (data === "success") {
+			location.reload();
+			}
 		});
 
 	}
-	function opendialog() {
-		dialog.dialog("open");
+	function opendialogKhoa() {
+		$("input[name='id']").val('0'); 
+		$("input[name='maKhoa']").val('');
+		$("input[name='tenKhoa']").val(''); 
+		dialogKhoa.dialog("open");
+	}
+	function opendialogForEditKhoa(id, maKhoa,tenKhoa) {
+		$("input[name='id']").val(id); 
+		$("input[name='maKhoa']").val(maKhoa);
+		$("input[name='tenKhoa']").val(tenKhoa); 
+		dialogKhoa.dialog("open");
+	}
+	
+	function deleteKhoa(indexKhoa, tenKhoa) {
+		if (confirm('Bạn có chắc muốn xóa khoa ' + tenKhoa + '?')) {
+			$.post("deletekhoa", {
+			indexKhoa : indexKhoa,
+			}).done(function(data) {
+			alert(data);
+			if (data === "success") {
+				location.reload();
+				}
+			});
+		}
 	}
 </script>
 </head>
 <body>
 	<h1>Xin chào Quản lí Khoa</h1>
-	<button onclick="opendialog()">Thêm Khoa</button>
+	<button onclick="opendialogKhoa()">Thêm Khoa</button>
 	<hr />
 	<table id="table_khoa" class="display">
 		<thead>
@@ -71,8 +98,9 @@
 					<td>${status.index +1}</td>
 					<td>${khoa.maKhoa }</td>
 					<td>${khoa.tenKhoa }</td>
-					<td><button>Edit</button>
-						<button>Delete</button></td>
+					<td><button
+							onclick="opendialogForEditKhoa('${khoa.id}', '${khoa.maKhoa }', '${khoa.tenKhoa }')">Edit</button>
+						<button onclick="deleteKhoa(${status.index}, '${khoa.tenKhoa }')">Delete</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -82,6 +110,7 @@
 		<p class="validateTips">Vui lòng điền thông tin của khoa mới.</p>
 		<form action="addkhoa" enctype="application/x-www-form-urlencoded"
 			method="post" accept-charset="UTF-8">
+			<input type="hidden" name="id" value="0" />
 			<fieldset>
 				<label for="maKhoa">Mã khoa: </label> <input type="text"
 					name="maKhoa" id="maKhoa" value=""

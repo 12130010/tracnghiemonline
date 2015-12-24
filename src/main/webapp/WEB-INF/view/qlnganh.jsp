@@ -9,22 +9,22 @@
 <meta charset="utf-8">
 <title>Add Khoa</title>
 <script type="text/javascript">
-	var dialog, form;
+	var dialogNganh, form;
 	$(document).ready(function() {
 		$('#selectkhoa').change(function() {
 			selectNganh("-1");
 			var index = $("#selectkhoa option:selected").attr('value');
 			selectNganh(index);
 		});
-		dialog = $("#dialog-form-nganh").dialog({
+		dialogNganh = $("#dialog-form-nganh").dialog({
 			autoOpen : false,
 			height : 350,
 			width : 350,
 			modal : true,
 			buttons : {
-				"Tạo khoa" : addNganh,
+				"Tạo ngành" : addNganh,
 				Cancel : function() {
-					dialog.dialog("close");
+					dialogNganh.dialog("close");
 				}
 			},
 			close : function() {
@@ -32,7 +32,7 @@
 				// 				allFields.removeClass("ui-state-error");
 			}
 		});
-		form = dialog.find("form").on("submit", function(event) {
+		form = dialogNganh.find("form").on("submit", function(event) {
 			event.preventDefault();
 			addNganh();
 		});
@@ -47,25 +47,55 @@
 	}
 
 	function addNganh() {
+		var id = $("input[id='idNganh']").val(); 
 		var maNganh = $("input[name='maNganh']").val();
 		var tenNganh = $("input[name='tenNganh']").val();
 		var indexKhoa = $("#selectkhoa option:selected").attr('value');
 		if (indexKhoa === "-1") {
 			alert("Bạn chưa chọn khoa!")
 		} else {
-			dialog.dialog("close");
+			dialogNganh.dialog("close");
 			$.post("addnganh", {
+				id: id,
 				maNganh : maNganh,
 				tenNganh : tenNganh,
 				indexKhoa : indexKhoa
 			}).done(function(data) {
 				alert(data);
+				if (data === "success") {
+					var index = $("#selectkhoa option:selected").attr('value');
+					selectNganh(index);
+				}
 			});
 		}
-
+	}
+	function opendialogForEditNganh(id, maNganh,tenNganh) {
+		$("input[id='idNganh']").val(id); 
+		$("input[name='maNganh']").val(maNganh);
+		$("input[name='tenNganh']").val(tenNganh); 
+		dialogNganh.dialog("open");
+	}
+	
+	function deleteNganh(indexNganh, tenNganh) {
+		if (confirm('Bạn có chắc muốn xóa khoa ' + tenNganh + '?')) {
+			var indexKhoa = $("#selectkhoa option:selected").attr('value');
+			$.post("deletenganh", {
+				indexNganh : indexNganh,
+				indexKhoa : indexKhoa,
+			}).done(function(data) {
+				alert(data);
+				if (data === "success") {
+					var index = $("#selectkhoa option:selected").attr('value');
+					selectNganh(index);
+				}
+			});
+		}
 	}
 	function opendialogNganh() {
-		dialog.dialog("open");
+		$("input[id='idNganh']").val('0'); 
+		$("input[name='maNganh']").val('');
+		$("input[name='maNganh']").val(''); 
+		dialogNganh.dialog("open");
 	}
 </script>
 </head>
@@ -87,6 +117,7 @@
 		<p class="validateTips">Vui lòng điền thông tin của ngành mới.</p>
 		<form action="addkhoa" enctype="application/x-www-form-urlencoded"
 			method="post" accept-charset="UTF-8">
+			<input type="hidden" id="idNganh" name="id" value="0"/>
 			<fieldset>
 				<label for="maKhoa">Mã ngành: </label> <input type="text"
 					name="maNganh" id="maKhoa" value=""

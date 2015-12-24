@@ -44,8 +44,8 @@
 					<td>${status.index +1}</td>
 					<td>${nganh.maNganh }</td>
 					<td>${nganh.tenNganh }</td>
-					<td><button>Edit</button>
-						<button>Delete</button></td>
+					<td><button onclick="opendialogForEditNganh('${nganh.id}', '${nganh.maNganh }','${nganh.tenNganh }')">Edit</button>
+						<button onclick="deleteNganh(${status.index}, '${nganh.tenNganh }')">Delete</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>
