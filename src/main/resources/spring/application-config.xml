@@ -27,7 +27,7 @@
 				<value>model.MonHoc</value>
 				<value>model.Nganh</value>
 				<value>model.Khoa</value>
-			</list>
+			</list> 
 		</property>
 		<property name="hibernateProperties">
 			<props>

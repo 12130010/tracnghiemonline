@@ -10,10 +10,12 @@ import dao.AccountDao;
 import dao.KhoaDao;
 import dao.MessageDao;
 import dao.MonHocDao;
+import dao.NganhDao;
 import dao.XepHangMonHocDao;
 import model.Account;
 import model.Khoa;
 import model.MonHoc;
+import model.Nganh;
 import model.XepHangMonHoc;
 import model.dto.MyStatus;
 
@@ -23,6 +25,8 @@ public class ThiThuService {
 	AccountDao accountDao;
 	@Autowired
 	KhoaDao khoaDao;
+	@Autowired
+	NganhDao nganhDao;
 	@Autowired
 	MonHocDao monHocDao;
 	@Autowired
@@ -37,6 +41,7 @@ public class ThiThuService {
 	public Account login(String username, String password) throws Exception {
 		return accountDao.login(username, password);
 	}
+
 	public Account login(long idAccount) throws Exception {
 		return accountDao.find(idAccount);
 	}
@@ -104,5 +109,19 @@ public class ThiThuService {
 
 	public Account forgetPassword(long idAccount) throws Exception {
 		return accountDao.forgetPassword(idAccount);
+	}
+	/*
+	 * quan li admin
+	 */
+
+	public void addKhoa(Khoa khoa) {
+		khoaDao.save(khoa);
+	}
+	public void updateKhoa(Khoa khoa) {
+		khoaDao.saveOrUpdate(khoa);
+	}
+
+	public void addNganh(Nganh nganh) {
+		nganhDao.save(nganh);
 	}
 }
