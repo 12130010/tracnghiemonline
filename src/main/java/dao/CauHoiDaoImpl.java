@@ -28,7 +28,29 @@ public class CauHoiDaoImpl extends GenericDaoImpl<CauHoi, Long> implements CauHo
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-
+	@Override
+	public CauHoi find(Long idCauHoi) {
+		Session session = openSession();
+		Transaction transaction = null;
+		CauHoi cauHoi = null;
+		try {
+			transaction = session.beginTransaction();
+			cauHoi = (CauHoi) session.get(CauHoi.class, idCauHoi);
+			cauHoi.fetchAll();
+			session.flush();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		return cauHoi;
+	}
 	@Override
 	public List<Long> listIdCauHoi(long idMonHoc) {
 		Session session = openSession();
@@ -58,6 +80,35 @@ public class CauHoiDaoImpl extends GenericDaoImpl<CauHoi, Long> implements CauHo
 			}
 		}
 		return list;
+	}
+	@Override
+	public List<CauHoi> listIdCauHois(long idMonHoc) {
+		Session session = openSession();
+		Transaction transaction = null;
+		List<CauHoi> listCH = new ArrayList<>();
+		try {
+			transaction = session.beginTransaction();
+			// TODO just get list id cau hoi. Chua can lam.
+			SQLQuery sqlQuery = session.createSQLQuery(SQL.LIST_CAUHOI_OF_MONHOC_SQL);
+			sqlQuery.setParameter("idMonHoc", idMonHoc);
+			sqlQuery.addEntity(CauHoi.class);
+			listCH = sqlQuery.list();
+			for (CauHoi cauHoi : listCH) {
+				cauHoi.fetchAll();
+			}
+			session.flush();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		return listCH;
 	}
 
 	@Override

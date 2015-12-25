@@ -17,6 +17,32 @@ public class MonHocDaoImpl extends GenericDaoImpl<MonHoc, Long> implements MonHo
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+	
+	@Override
+	public MonHoc find(Long idMonHoc) {
+		MonHoc monHoc = null;
+		Session session = openSession();
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+			monHoc = (MonHoc) session.get(MonHoc.class, idMonHoc);
+			if (monHoc != null){
+				monHoc.setDsCauHoi(cauHoiDao.listIdCauHois(idMonHoc));
+			}
+			session.flush();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		return monHoc;
+	}
 
 	@Autowired
 	public void setCauHoiDao(CauHoiDao cauHoiDao) {

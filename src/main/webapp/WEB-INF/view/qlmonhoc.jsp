@@ -90,7 +90,7 @@
 					});
 		}
 	}
-	function opendialogNganh() {
+	function opendialogMonHoc() {
 		$("input[id='idMonHoc']").val('0');
 		$("input[name='maMH']").val('');
 		$("input[name='tenMonHoc']").val('');
@@ -99,7 +99,7 @@
 		dialogMonHoc.dialog("open");
 	}
 
-	function opendialogForEditNganh(id, maMH, tenMonHoc, thoiGian, soLgCauHoi) {
+	function opendialogForEditMonHoc(id, maMH, tenMonHoc, thoiGian, soLgCauHoi) {
 		$("input[id='idMonHoc']").val(id);
 		$("input[name='maMH']").val(maMH);
 		$("input[name='tenMonHoc']").val(tenMonHoc);
@@ -160,7 +160,7 @@
 		<option value="-1">Chọn ngành</option>
 	</select>
 	<hr />
-	<button onclick="opendialogNganh()">Thêm môn học</button>
+	<button onclick="opendialogMonHoc()">Thêm môn học</button>
 	<hr />
 	<div id="content-table-monhoc"></div>
 	<!-- 	dialog -->

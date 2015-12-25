@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dao.AccountDao;
+import dao.CauHoiDao;
 import dao.KhoaDao;
 import dao.MessageDao;
 import dao.MonHocDao;
 import dao.NganhDao;
 import dao.XepHangMonHocDao;
 import model.Account;
+import model.CauHoi;
 import model.Khoa;
 import model.MonHoc;
 import model.Nganh;
@@ -33,7 +35,9 @@ public class ThiThuService {
 	XepHangMonHocDao xepHangMonHocDao;
 	@Autowired
 	MessageDao messageDao;
-
+	@Autowired
+	CauHoiDao cauHoiDao;
+	
 	public Account register(Account account) throws Exception {
 		return accountDao.register(account);
 	}
@@ -53,7 +57,9 @@ public class ThiThuService {
 	public MonHoc getDeThiThu(long idMonHoc, int doKho) throws Exception {
 		return monHocDao.getThiThu(idMonHoc, doKho);
 	}
-
+	public MonHoc getMonhoc(long idMonHoc){
+		return monHocDao.find(idMonHoc);
+	}
 	public MyStatus luuDiemThiThu(long idMonHoc, long idAccount, String tenAcc, int doKho, double diem) {
 		MyStatus myStatus = new MyStatus();
 		try {
@@ -138,5 +144,8 @@ public class ThiThuService {
 	}
 	public void deleteMonHoc(MonHoc monHoc){
 		monHocDao.remove(monHoc);
+	}
+	public CauHoi getCauHoi(long idCauHoi){
+		return cauHoiDao.find(idCauHoi);
 	}
 }

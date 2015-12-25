@@ -32,6 +32,7 @@
 			<li><a href="#tabs-1">Quản lí Khoa</a></li>
 			<li><a href="#tabs-2">Quản lí Ngành</a></li>
 			<li><a href="#tabs-3">Quản lí Môn học</a></li>
+			<li><a href="#tabs-4">Quản lí Câu hỏi</a></li>
 		</ul>
 		<div id="tabs-1">
 			<%@ include file="qlkhoa.jsp"%>
@@ -41,6 +42,9 @@
 		</div>
 		<div id="tabs-3">
 			<%@ include file="qlmonhoc.jsp"%>
+		</div>
+		<div id="tabs-4">
+			<%@ include file="qlcauhoi.jsp"%>
 		</div>
 	</div>
 

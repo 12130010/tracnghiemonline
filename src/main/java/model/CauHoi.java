@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
+
+import util.ToString;
 @Entity
 public class CauHoi {
 	@Transient
@@ -36,6 +38,7 @@ public class CauHoi {
 	@JoinColumn(name="cauhoi_id")
 	private List<DapAn> dsDapAn  = new ArrayList<>();
 	private int doKho;
+	private boolean display;
 	public CauHoi() {
 	}
 	public long getId() {
@@ -75,8 +78,13 @@ public class CauHoi {
 	public void setDoKho(int doKho) {
 		this.doKho = doKho;
 	}
-		
 	
+	public boolean isDisplay() {
+		return display;
+	}
+	public void setDisplay(boolean display) {
+		this.display = display;
+	}
 	@Override
 	public String toString() {
 		return "CauHoi [id=" + id + ", noiDung=" + noiDung + ", dsHinh=" + dsHinh + ", giaiThich=" + giaiThich
@@ -95,5 +103,8 @@ public class CauHoi {
 		}
 		slgChon = diem * (slgChon/slgDung);
 		return slgChon;
+	}
+	public String convertHinhToTagA(){
+		return ToString.toStringImage(dsHinh);
 	}
 }

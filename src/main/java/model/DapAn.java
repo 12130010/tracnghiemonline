@@ -62,11 +62,11 @@ public class DapAn {
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
 	}
+	static String format = "<a href='download?fileName=%s' target='_blank'>%s</a>";
 	@Override
 	public String toString() {
-		return "DapAn [id=" + id + ", thuTu=" + thuTu + ", noiDungDA="
-				+ noiDungDA + ", hinh=" + hinh + ", laDADung=" + laDADung
-				+ ", isSelected=" + isSelected + "]";
+		return noiDungDA +", hinh:[" + (hinh == null? "" : String.format(format, hinh,hinh)) + "], " + (laDADung? "x" : "");
 	}
+	
 	
 }

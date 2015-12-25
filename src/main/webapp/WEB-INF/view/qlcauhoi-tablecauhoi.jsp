@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,36 +15,42 @@
 
 
 <script type="text/javascript" charset="utf8" src="js/dataTables.js"></script>
-
 <script type="text/javascript">
 	$(document).ready(function() {
-		datatable = $('#table_monhoc').DataTable();
+		datatable = $('#table_cauhoi').DataTable();
 	});
 </script>
+
 </head>
 <body>
-	<table id="table_monhoc" class="display">
+	<table id="table_cauhoi" class="display">
 		<thead>
 			<tr>
 				<th>STT</th>
-				<th>Mã môn học</th>
-				<th>Tên môn học</th>
-				<th>Số lượng câu hỏi</th>
-				<th>Thời gian</th>
+				<th>Nội dung câu hỏi</th>
+				<th>Hình ảnh</th>
+				<th>Số lượng đáp án</th>
+				<th>Độ khó</th>
 				<th>Action</th>
 			</tr>
 		</thead>
-		<tbody id="tbody_monhoc">
-			<c:forEach var="monhoc" items="${selectNganh.dsMonHoc}"
+		<tbody>
+			<c:forEach var="cauhoi" items="${selectMonHocForCauHoi.dsCauHoi}"
 				varStatus="status">
 				<tr>
 					<td>${status.index +1}</td>
-					<td>${monhoc.maMH }</td>
-					<td>${monhoc.tenMonHoc }</td>
-					<td>${monhoc.soLgCauHoi}</td>
-					<td>${monhoc.thoiGian}</td>
-					<td><button onclick="opendialogForEditMonHoc('${monhoc.id}', '${monhoc.maMH}', '${monhoc.tenMonHoc }' ,'${monhoc.thoiGian }', ${monhoc.soLgCauHoi })">Edit</button>
-						<button onclick="deleteMonHoc('${status.index}', '${monhoc.tenMonHoc }') ">Delete</button></td>
+					<td><pre>${cauhoi.noiDung }</pre></td>
+					<s:eval
+						expression="T(util.ToString).toStringImage(cauhoi.dsHinh)"
+						var="dsHinh" />
+					<td><pre>${dsHinh }</pre></td>
+					<s:eval
+						expression="T(util.ToString).toString(cauhoi.dsDapAn)"
+						var="dsDapAn" />
+					<td><pre>${dsDapAn}</pre></td>
+					<td>${cauhoi.doKho}</td>
+					<td><button>Edit</button>
+						<button>Delete</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>
