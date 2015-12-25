@@ -42,8 +42,8 @@
 					<td>${monhoc.tenMonHoc }</td>
 					<td>${monhoc.soLgCauHoi}</td>
 					<td>${monhoc.thoiGian}</td>
-					<td><button>Edit</button>
-						<button>Delete</button></td>
+					<td><button onclick="opendialogForEditNganh('${monhoc.id}', '${monhoc.maMH}', '${monhoc.tenMonHoc }' ,'${monhoc.thoiGian }', ${monhoc.soLgCauHoi })">Edit</button>
+						<button onclick="deleteMonHoc('${status.index}', '${monhoc.tenMonHoc }') ">Delete</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>

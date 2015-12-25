@@ -113,7 +113,7 @@
 	<hr />
 	<div id="content-table-nganh"></div>
 	<!-- Dialog  -->
-	<div id="dialog-form-nganh" title="Tạo khoa mới">
+	<div id="dialog-form-nganh" title="Tạo ngành mới">
 		<p class="validateTips">Vui lòng điền thông tin của ngành mới.</p>
 		<form action="addkhoa" enctype="application/x-www-form-urlencoded"
 			method="post" accept-charset="UTF-8">

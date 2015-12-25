@@ -304,6 +304,43 @@ public class ThiThuController {
 				return "fail";
 			}
 		}
-
+	}
+	
+	@RequestMapping(value = "addmonhoc", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public @ResponseBody String addMonHoc(MonHoc monHoc, int indexKhoa, int indexNganh, HttpSession session){
+		List<Khoa> listKhoa = (List<Khoa>) session.getAttribute(LIST_KHOA);
+		Khoa khoa = listKhoa.get(indexKhoa);
+		Nganh nganh = khoa.getDsNganh().get(indexNganh);
+		System.out.println(monHoc);
+		try{
+			if(monHoc.getId() ==0){
+				thiThuService.saveOrUpdateMonHoc(monHoc, nganh.getId());
+				nganh.addMonHoc(monHoc);
+			}else{
+				thiThuService.saveOrUpdateMonHoc(monHoc, -1);
+				nganh.getDsMonHoc().remove(monHoc);
+				nganh.addMonHoc(monHoc);
+			}
+			return "success";
+		}catch (Exception e){
+			e.printStackTrace();
+			return "fail";
+		}
+	}
+	@RequestMapping(value = "deletemonhoc")
+	public @ResponseBody String deleteMonHoc( int indexKhoa, int indexNganh,int indexMonHoc, HttpSession session){
+		List<Khoa> listKhoa = (List<Khoa>) session.getAttribute(LIST_KHOA);
+		Khoa khoa = listKhoa.get(indexKhoa);
+		Nganh nganh = khoa.getDsNganh().get(indexNganh);
+		MonHoc monHoc = nganh.getDsMonHoc().get(indexMonHoc);
+		try{
+			nganh.getDsMonHoc().remove(monHoc);
+			thiThuService.updateNganh(nganh);;
+			return "success";
+		}catch (Exception e ){
+			e.printStackTrace();
+			nganh.addMonHoc(monHoc);
+			return "fail";
+		}
 	}
 }

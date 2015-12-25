@@ -110,4 +110,11 @@ public class MonHoc {
 		}
 		return diemThi;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null || !(obj instanceof MonHoc))
+			return false;
+		MonHoc that = (MonHoc) obj;
+		return this.id == that.id;
+	}
 }

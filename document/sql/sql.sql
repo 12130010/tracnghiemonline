@@ -98,3 +98,7 @@ select *
 from message
 ORDER BY id Desc 
 limit 0,1;
+
+-- xoa cac mon hoc bi mồ côi.
+delete from monhoc
+where id not in (SELECT DISTINCT dsMonhoc_id from nganh_monhoc)

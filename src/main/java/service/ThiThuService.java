@@ -130,4 +130,13 @@ public class ThiThuService {
 	public void deleteNganh(Nganh nganh){
 		nganhDao.remove(nganh);
 	}
+	public void saveOrUpdateMonHoc(MonHoc monHoc, long idNganh){
+		if(idNganh > 0)
+			monHocDao.save(monHoc, idNganh);
+		else
+			monHocDao.saveOrUpdate(monHoc);
+	}
+	public void deleteMonHoc(MonHoc monHoc){
+		monHocDao.remove(monHoc);
+	}
 }

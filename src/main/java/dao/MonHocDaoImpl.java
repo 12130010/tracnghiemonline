@@ -1,5 +1,7 @@
 package dao;
 
+import org.hibernate.HibernateException;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -46,6 +48,34 @@ public class MonHocDaoImpl extends GenericDaoImpl<MonHoc, Long> implements MonHo
 			}
 		}
 		return monHoc;
+	}
+
+	@Override
+	public Long save(MonHoc monHoc, long idNganh) throws HibernateException {
+		Session session = openSession();
+		Transaction transaction = null;
+		Long idMH = 0l;
+		try {
+			transaction = session.beginTransaction();
+			idMH = (Long) session.save(monHoc);
+			SQLQuery sqlQuery = session.createSQLQuery(SQL.INSERT_MONHOC_REF_NGANH);
+			sqlQuery.setParameter("Nganh_id", idNganh);
+			sqlQuery.setParameter("dsMonHoc_id", idMH);
+			sqlQuery.executeUpdate();
+			monHoc.setId(idMH);
+			session.flush();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		return idMH;
 	}
 
 }

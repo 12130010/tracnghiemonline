@@ -17,6 +17,8 @@ import dao.MessageDao;
 import dao.MessageDaoImpl;
 import dao.MonHocDao;
 import dao.MonHocDaoImpl;
+import dao.NganhDao;
+import dao.NganhDaoImpl;
 import dao.XepHangMonHocDao;
 import dao.XepHangMonHocDaoImpl;
 import model.Account;
@@ -79,16 +81,11 @@ public class SpringHibernateMain {
 		// XepHangMonHocDao xepHangMonHocDao = new
 		// XepHangMonHocDaoImpl(sessionFactory);
 		// xepHangMonHocDao.submitDiem(9l, 3, "Hoang Nhuoc Quy", 1, 9);
+		
 		 MonHocDaoImpl monHocDao = new MonHocDaoImpl();
 		 monHocDao.setSessionFactory(sessionFactory);
-		 CauHoiDaoImpl cauHoiDao = new CauHoiDaoImpl();
-		 cauHoiDao.setSessionFactory(sessionFactory);
-		 monHocDao.setCauHoiDao(cauHoiDao);
-		try {
-			System.out.println(monHocDao.getThiThu(10l, 1));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		 MonHoc monHoc = new MonHoc("ABC", 50, 20, "ABCC");
+		 monHocDao.save(monHoc, 14);
 		// XepHangMonHocDao xepHangMonHocDao = new
 		// XepHangMonHocDaoImpl(sessionFactory);
 		// try {

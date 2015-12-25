@@ -57,4 +57,9 @@ public class SQL {
 	 * 1 : limit
 	 */
 	public static String GET_MESSAGE = "select * from message order by  id DESC limit 0,?;" ;
+	/**INSERT_MONHOC_REF_NGANH
+	 * 1 : Nganh_id
+	 * 2 : dsMonHoc_id
+	 */
+	public static String INSERT_MONHOC_REF_NGANH = "insert into nganh_monhoc (Nganh_id, dsMonHoc_id) values (:Nganh_id,:dsMonHoc_id)";
 }
