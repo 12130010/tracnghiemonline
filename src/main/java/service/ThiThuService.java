@@ -148,4 +148,13 @@ public class ThiThuService {
 	public CauHoi getCauHoi(long idCauHoi){
 		return cauHoiDao.find(idCauHoi);
 	}
+	public void saveCauHoi(CauHoi cauHoi, long idMonHoc){
+		cauHoiDao.save(cauHoi, idMonHoc);
+	}
+	public void updateCauHoi(CauHoi cauHoi){
+		cauHoiDao.saveOrUpdate(cauHoi);;
+	}
+	public void deleteCauHoi(CauHoi cauHoi){
+		cauHoiDao.remove(cauHoi);
+	}
 }

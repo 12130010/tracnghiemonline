@@ -62,4 +62,9 @@ public class SQL {
 	 * 2 : dsMonHoc_id
 	 */
 	public static String INSERT_MONHOC_REF_NGANH = "insert into nganh_monhoc (Nganh_id, dsMonHoc_id) values (:Nganh_id,:dsMonHoc_id)";
+	/**
+	 * monhoc_id
+	 * id
+	 */
+	public static String UPDATE_REF_MONHOC_AFTER_INSERT_CAUHOI = "update cauhoi set monhoc_id = :monhoc_id where id = :id";
 }

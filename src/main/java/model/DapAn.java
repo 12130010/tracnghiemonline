@@ -67,6 +67,14 @@ public class DapAn {
 	public String toString() {
 		return noiDungDA +", hinh:[" + (hinh == null? "" : String.format(format, hinh,hinh)) + "], " + (laDADung? "x" : "");
 	}
-	
-	
+	public String convertHinhToTagA(){
+		return (hinh == null? "" : String.format(format, hinh,hinh));
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null || !(obj instanceof DapAn))
+			return false;
+		DapAn that = (DapAn) obj;
+		return this.id == that.id;
+	}
 }

@@ -1,5 +1,6 @@
 package test;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import dao.NganhDaoImpl;
 import dao.XepHangMonHocDao;
 import dao.XepHangMonHocDaoImpl;
 import model.Account;
+import model.CauHoi;
 import model.Khoa;
 import model.MonHoc;
 import model.Nganh;
@@ -82,10 +84,6 @@ public class SpringHibernateMain {
 		// XepHangMonHocDaoImpl(sessionFactory);
 		// xepHangMonHocDao.submitDiem(9l, 3, "Hoang Nhuoc Quy", 1, 9);
 		
-		 MonHocDaoImpl monHocDao = new MonHocDaoImpl();
-		 monHocDao.setSessionFactory(sessionFactory);
-		 MonHoc monHoc = new MonHoc("ABC", 50, 20, "ABCC");
-		 monHocDao.save(monHoc, 14);
 		// XepHangMonHocDao xepHangMonHocDao = new
 		// XepHangMonHocDaoImpl(sessionFactory);
 		// try {
@@ -105,6 +103,12 @@ public class SpringHibernateMain {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+		CauHoiDaoImpl cauHoiDao = new CauHoiDaoImpl();
+		cauHoiDao.setSessionFactory(sessionFactory);
+		ArrayList<String> dsHinh = new ArrayList<>();
+		dsHinh.add("hinh1.png");
+		dsHinh.add("hinh2.png");
+		cauHoiDao.save(new CauHoi("aaaaaaaaa",dsHinh,"bbbbbbbb",1,true),9);
 		context.close();
 	}
 }

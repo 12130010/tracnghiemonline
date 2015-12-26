@@ -49,8 +49,8 @@
 						var="dsDapAn" />
 					<td><pre>${dsDapAn}</pre></td>
 					<td>${cauhoi.doKho}</td>
-					<td><button>Edit</button>
-						<button>Delete</button></td>
+					<td><button onclick="editCauHoi('${cauhoi.id}')">Edit</button>
+						<button onclick="deleteCauHoi('${status.index}')">Delete</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>

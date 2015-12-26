@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 
 import model.Account;
 import model.CauHoi;
+import model.MonHoc;
 
 @Repository
 public class CauHoiDaoImpl extends GenericDaoImpl<CauHoi, Long> implements CauHoiDao {
@@ -201,6 +202,33 @@ public class CauHoiDaoImpl extends GenericDaoImpl<CauHoi, Long> implements CauHo
 			}
 		}
 		return listCauHoi;
+	}
+	@Override
+	public long save(CauHoi cauHoi, long idMonHoc) {
+		Session session = openSession();
+		long idCauHoi = -1;
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+			idCauHoi = (long) session.save(cauHoi);
+			SQLQuery sqlQuery = session.createSQLQuery(SQL.UPDATE_REF_MONHOC_AFTER_INSERT_CAUHOI);
+			sqlQuery.setParameter("id", idCauHoi);
+			sqlQuery.setParameter("monhoc_id", idMonHoc);
+			sqlQuery.executeUpdate();
+			cauHoi.setId(idCauHoi);
+			session.flush();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		return idCauHoi;
 	}
 
 }

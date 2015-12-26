@@ -16,7 +16,6 @@
 <!-- Datatable and editor -->
 <link rel="stylesheet" type="text/css" href="css/dataTables.css">
 
-
 <script type="text/javascript" charset="utf8" src="js/dataTables.js"></script>
 
 <!--  function for tab panel run -->

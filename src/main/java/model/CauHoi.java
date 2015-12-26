@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -34,13 +35,27 @@ public class CauHoi {
 	private List<String> dsHinh = new ArrayList<>();
 	@Type(type="text")
 	private String giaiThich;
-	@OneToMany()
+	@OneToMany( cascade = CascadeType.ALL)
 	@JoinColumn(name="cauhoi_id")
 	private List<DapAn> dsDapAn  = new ArrayList<>();
 	private int doKho;
 	private boolean display;
 	public CauHoi() {
 	}
+	
+	
+
+	public CauHoi(String noiDung, List<String> dsHinh, String giaiThich, int doKho, boolean display) {
+		super();
+		this.noiDung = noiDung;
+		this.dsHinh = dsHinh;
+		this.giaiThich = giaiThich;
+		this.doKho = doKho;
+		this.display = display;
+	}
+
+
+
 	public long getId() {
 		return id;
 	}

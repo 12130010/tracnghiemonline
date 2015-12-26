@@ -102,3 +102,7 @@ limit 0,1;
 -- xoa cac mon hoc bi mồ côi.
 delete from monhoc
 where id not in (SELECT DISTINCT dsMonhoc_id from nganh_monhoc)
+
+-- xoa cac dapan bi mồ coi
+delete from dapan
+where cauhoi_id is null;

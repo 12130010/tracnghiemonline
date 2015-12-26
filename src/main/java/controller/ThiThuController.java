@@ -1,12 +1,17 @@
 package controller;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +28,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import model.Account;
 import model.CauHoi;
+import model.DapAn;
 import model.Khoa;
 import model.MonHoc;
 import model.Nganh;
@@ -187,7 +194,8 @@ public class ThiThuController {
 	public void doDownload(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(required = true) String fileName) throws IOException {
 
-		String fullPath = IMAGE_DIR + fileName;
+		// String fullPath = IMAGE_DIR + fileName;
+		String fullPath = IMAGE_DIR + File.separator + "tmp" + File.separator + fileName;
 		File downloadFile = new File(fullPath);
 		FileInputStream inputStream = new FileInputStream(downloadFile);
 
@@ -368,8 +376,6 @@ public class ThiThuController {
 		}
 	}
 
-	
-
 	@RequestMapping("qlcauhoitablecauhoi")
 	public String qlCauHoiTableCauHoi(int indexkhoa, int indexnganh, int indexmonhoc, HttpSession session,
 			Model model) {
@@ -378,9 +384,10 @@ public class ThiThuController {
 		Nganh nganh = khoa.getDsNganh().get(indexnganh);
 		MonHoc monHoc = nganh.getDsMonHoc().get(indexmonhoc);
 		monHoc = thiThuService.getMonhoc(monHoc.getId());
-		model.addAttribute(SELECT_MONHOC_FOR_CAUHOI, monHoc);
+		session.setAttribute(SELECT_MONHOC_FOR_CAUHOI, monHoc);
 		return "qlcauhoi-tablecauhoi";
 	}
+
 	@RequestMapping("qlcauhoiaddcauhoi")
 	public String qlCauHoiAddCauHoi(int indexkhoa, int indexnganh, int indexmonhoc,
 			@RequestParam(defaultValue = "-1") long idCauHoi, HttpSession session, Model model) {
@@ -390,7 +397,9 @@ public class ThiThuController {
 		MonHoc monHoc = nganh.getDsMonHoc().get(indexmonhoc);
 		if (idCauHoi >= 0) {
 			CauHoi cauHoi = thiThuService.getCauHoi(idCauHoi);
-			model.addAttribute(ADD_CAUHOI_CAUHOI, cauHoi);
+			session.setAttribute(ADD_CAUHOI_CAUHOI, cauHoi);
+		} else {
+			session.removeAttribute(ADD_CAUHOI_CAUHOI);
 		}
 		model.addAttribute(ADD_CAUHOI_KHOA, khoa);
 		model.addAttribute(ADD_CAUHOI_KHOA_INDEX, indexkhoa);
@@ -400,12 +409,104 @@ public class ThiThuController {
 		model.addAttribute(ADD_CAUHOI_MONHOC_INDEX, indexmonhoc);
 		return "qlcauhoi-addcauhoi";
 	}
-	@RequestMapping("addcauhoi")
-	public String addCauHoi(int indexkhoa, int indexnganh, int indexmonhoc,
-			CauHoi cauHoi, HttpSession session, Model model){
-		cauHoi.setNoiDung(new String(cauHoi.getNoiDung().getBytes(Charset.forName("ISO-8859-1")), Charset.forName("UTF-8")));
-		cauHoi.setGiaiThich(new String(cauHoi.getGiaiThich().getBytes(Charset.forName("ISO-8859-1")), Charset.forName("UTF-8")));
+
+	@RequestMapping(value = "adddapan", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public String addDapAn(int indexkhoa, int indexnganh, int indexmonhoc, DapAn dapAn,
+			@RequestParam("hinhs") MultipartFile hinh, HttpSession session) throws IOException {
+		CauHoi cauHoi = (CauHoi) session.getAttribute(ADD_CAUHOI_CAUHOI);
+		if (hinh != null && hinh.getSize() > 0) {
+			List<String> hinhs = saveFileToDisk(IMAGE_DIR, hinh);
+			dapAn.setHinh(hinhs.get(0));
+		}
+		dapAn.setNoiDungDA(
+				new String(dapAn.getNoiDungDA().getBytes(Charset.forName("ISO-8859-1")), Charset.forName("UTF-8")));
+		if (dapAn.getId() == 0)
+			cauHoi.getDsDapAn().add(dapAn);
+		else {
+			cauHoi.getDsDapAn().remove(dapAn);
+			cauHoi.getDsDapAn().add(dapAn);
+		}
+		thiThuService.updateCauHoi(cauHoi);
+		System.out.println(dapAn);
+		return String.format("redirect:/qlcauhoiaddcauhoi?indexkhoa=%s&indexnganh=%s&indexmonhoc=%s&idCauHoi=%s",
+				indexkhoa, indexnganh, indexmonhoc, cauHoi.getId());
+	}
+
+	@RequestMapping("deletedapan")
+	public @ResponseBody String deleteDapAn(int indexdapan, HttpSession session) {
+		CauHoi cauHoi = (CauHoi) session.getAttribute(ADD_CAUHOI_CAUHOI);
+		try {
+			DapAn dapAn = cauHoi.getDsDapAn().get(indexdapan);
+			cauHoi.getDsDapAn().remove(dapAn);
+			thiThuService.updateCauHoi(cauHoi);
+			return "success";
+		} catch (Exception e) {
+			cauHoi = thiThuService.getCauHoi(cauHoi.getId());
+			session.setAttribute(ADD_CAUHOI_CAUHOI, cauHoi);
+			return "fail";
+		}
+
+	}
+
+	@RequestMapping(value = "addcauhoi", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public String addCauHoi(int indexkhoa, int indexnganh, int indexmonhoc, CauHoi cauHoi,
+			@RequestParam("hinh") MultipartFile[] hinhs, HttpSession session, Model model) throws IOException {
+		cauHoi.setNoiDung(
+				new String(cauHoi.getNoiDung().getBytes(Charset.forName("ISO-8859-1")), Charset.forName("UTF-8")));
+		cauHoi.setGiaiThich(
+				new String(cauHoi.getGiaiThich().getBytes(Charset.forName("ISO-8859-1")), Charset.forName("UTF-8")));
+		cauHoi.setDsHinh(saveFileToDisk(IMAGE_DIR, hinhs));
+		//
+		List<Khoa> listKhoa = (List<Khoa>) session.getAttribute(LIST_KHOA);
+		Khoa khoa = listKhoa.get(indexkhoa);
+		Nganh nganh = khoa.getDsNganh().get(indexnganh);
+		MonHoc monHoc = nganh.getDsMonHoc().get(indexmonhoc);
+		//
+		if (cauHoi.getId() == 0) {
+			thiThuService.saveCauHoi(cauHoi, monHoc.getId());
+		} else { // update
+			thiThuService.updateCauHoi(cauHoi);
+		}
 		System.out.println(cauHoi);
-		return "redirect:/";
+		return String.format("redirect:/qlcauhoiaddcauhoi?indexkhoa=%s&indexnganh=%s&indexmonhoc=%s&idCauHoi=%s",
+				indexkhoa, indexnganh, indexmonhoc, cauHoi.getId());
+	}
+
+	@RequestMapping("deletecauhoi")
+	public @ResponseBody String deleteCauHoi(int indexcauhoi, HttpSession session) {
+		try {
+			MonHoc monHoc = (MonHoc) session.getAttribute(SELECT_MONHOC_FOR_CAUHOI);
+			CauHoi cauHoi = monHoc.getDsCauHoi().get(indexcauhoi);
+			thiThuService.deleteCauHoi(cauHoi);
+			monHoc.getDsCauHoi().remove(cauHoi);
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+	}
+
+	public static List<String> saveFileToDisk(String dir, MultipartFile... files) throws IOException {
+		List<String> list = new ArrayList<>();
+		// file .jpg
+		String formatPath = dir + "tmp" + File.separator + "%s%s";
+		byte[] buffer = new byte[BUFFER_SIZE];
+		for (MultipartFile file : files) {
+			if (file.getSize() == 0)
+				continue;
+			long currentTime = System.currentTimeMillis();
+			String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+			String filePath = String.format(formatPath, currentTime, ext);
+			System.out.println(filePath);
+			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+			InputStream is = file.getInputStream();
+			int k = 0;
+			while ((k = is.read(buffer)) != -1) {
+				bos.write(buffer, 0, k);
+			}
+			bos.close();
+			list.add(currentTime + ext);
+		}
+		return list;
 	}
 }
