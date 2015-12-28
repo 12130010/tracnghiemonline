@@ -11,9 +11,7 @@ public class XepHangMonHoc {
 	private String tenMonHoc;
 	private int xepHang;
 	private int viTri;
-	@Transient
 	private double diemCaoNhat;
-	@Transient
 	private int doKho;
 	private List<DauBang> dsDauBang = new ArrayList<>();;
 

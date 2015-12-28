@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Table(name="account")
 public class Account {
 	@Id
 	@GeneratedValue

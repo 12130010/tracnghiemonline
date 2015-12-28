@@ -12,12 +12,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
 import util.ToString;
 @Entity
+@Table(name="cauhoi")
 public class CauHoi {
 	@Transient
 	public static final int EASY = 1;

@@ -5,7 +5,6 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- Uncomment and add your base-package here: <context:component-scan base-package="org.springframework.samples.service"/> -->
 	<!-- Hibernate config -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
@@ -15,6 +14,15 @@
 		<property name="username" value="root" />
 		<property name="password" value="vertrigo" />
 	</bean>
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" -->
+	<!-- destroy-method="close"> -->
+	<!-- <property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+	<!-- <property name="url" -->
+	<!-- value="jdbc:mysql://db10.serverhosting.vn:3306/ho774d8_quy?useUnicode=yes&amp;characterEncoding=utf8" 
+		/> -->
+	<!-- <property name="username" value="ho774d8_quy" /> -->
+	<!-- <property name="password" value="admin123" /> -->
+	<!-- </bean> -->
 	<!-- Hibernate 4 SessionFactory Bean definition -->
 	<bean id="hibernate4AnnotatedSessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -27,7 +35,7 @@
 				<value>model.MonHoc</value>
 				<value>model.Nganh</value>
 				<value>model.Khoa</value>
-			</list> 
+			</list>
 		</property>
 		<property name="hibernateProperties">
 			<props>

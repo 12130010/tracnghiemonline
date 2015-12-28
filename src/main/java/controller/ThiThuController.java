@@ -457,6 +457,12 @@ public class ThiThuController {
 				new String(cauHoi.getGiaiThich().getBytes(Charset.forName("ISO-8859-1")), Charset.forName("UTF-8")));
 		cauHoi.setDsHinh(saveFileToDisk(IMAGE_DIR, hinhs));
 		//
+		if (cauHoi.getId() > 0) {
+			CauHoi cauHoiOrg = (CauHoi) session.getAttribute(ADD_CAUHOI_CAUHOI);
+			cauHoi.getDsHinh().addAll(cauHoiOrg.getDsHinh());
+			cauHoi.setDsDapAn(cauHoiOrg.getDsDapAn());
+		}
+		//
 		List<Khoa> listKhoa = (List<Khoa>) session.getAttribute(LIST_KHOA);
 		Khoa khoa = listKhoa.get(indexkhoa);
 		Nganh nganh = khoa.getDsNganh().get(indexnganh);
@@ -495,7 +501,8 @@ public class ThiThuController {
 			if (file.getSize() == 0)
 				continue;
 			long currentTime = System.currentTimeMillis();
-			String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+			String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'))
+					.toLowerCase();
 			String filePath = String.format(formatPath, currentTime, ext);
 			System.out.println(filePath);
 			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
